@@ -1,0 +1,42 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34616.47
+MinimumVisualStudioVersion = 16.0.0.0
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConvoyPositioner.Windows", "ConvoyPositioner.Windows\ConvoyPositioner.Windows.csproj", "{9631E6E3-3465-4409-B907-2CAF13B48CEE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConvoyPositioner.Game", "ConvoyPositioner.Game\ConvoyPositioner.Game.csproj", "{99E878AC-9328-42EA-BFFE-3D5BB0520AD3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TileGridLibrary", "..\TileGridLibrary\TileGridLibrary.csproj", "{EEEC8738-B139-4A6A-ADEF-D926A8CD59EE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TileGridLibrary.Test", "..\ConvoyPositioner.Test\TileGridLibrary.Test.csproj", "{C2423543-1F00-4531-87C5-7CEA4CE00B9B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9631E6E3-3465-4409-B907-2CAF13B48CEE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9631E6E3-3465-4409-B907-2CAF13B48CEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9631E6E3-3465-4409-B907-2CAF13B48CEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9631E6E3-3465-4409-B907-2CAF13B48CEE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99E878AC-9328-42EA-BFFE-3D5BB0520AD3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99E878AC-9328-42EA-BFFE-3D5BB0520AD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99E878AC-9328-42EA-BFFE-3D5BB0520AD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99E878AC-9328-42EA-BFFE-3D5BB0520AD3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EEEC8738-B139-4A6A-ADEF-D926A8CD59EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EEEC8738-B139-4A6A-ADEF-D926A8CD59EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EEEC8738-B139-4A6A-ADEF-D926A8CD59EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EEEC8738-B139-4A6A-ADEF-D926A8CD59EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2423543-1F00-4531-87C5-7CEA4CE00B9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2423543-1F00-4531-87C5-7CEA4CE00B9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2423543-1F00-4531-87C5-7CEA4CE00B9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2423543-1F00-4531-87C5-7CEA4CE00B9B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CB3A3B18-9008-4FD7-9B55-5A8D21986B46}
+	EndGlobalSection
+EndGlobal

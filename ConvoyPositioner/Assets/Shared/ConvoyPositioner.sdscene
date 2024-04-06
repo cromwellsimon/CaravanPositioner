@@ -1,0 +1,43 @@
+!SceneAsset
+Id: 23c7cd19-8f67-4c53-b217-7ed690537dfa
+SerializedVersion: {Stride: 3.1.0.1}
+Tags: []
+ChildrenIds: []
+Parent: 32501218-5f55-444e-b315-a92928dfd32a:Scene
+Offset: {X: 0.0, Y: 0.0, Z: 0.0}
+Hierarchy:
+    RootParts:
+        - ref!! d6b35d43-3e17-4660-b67b-296ab5ac8f62
+        - ref!! 38d736a9-c963-4a48-998d-e03af55a35d2
+    Parts:
+        -   Entity:
+                Id: 38d736a9-c963-4a48-998d-e03af55a35d2
+                Name: Background
+                Components:
+                    da0f945b54ba9395742931b81d8179fc: !TransformComponent
+                        Id: fdcd03ce-0967-4dbe-bc13-cb9e855dd3a6
+                        Position: {X: 0.0, Y: 0.0, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 10.0, Y: 10.0, Z: 1.0}
+                        Children: {}
+                    a69ade2f000ed26555219f6d6d126789: !SpriteComponent
+                        Id: cdcb0b91-84c5-4e18-b907-22ef9749c450
+                        SpriteProvider: !SpriteFromSheet
+                            Sheet: 2ab21a6d-5a21-486a-a8b5-707bcff65a8c:SpriteSheet
+                        Color: {R: 0.0, G: 0.0, B: 0.0, A: 1.0}
+        -   Entity:
+                Id: d6b35d43-3e17-4660-b67b-296ab5ac8f62
+                Name: Camera
+                Components:
+                    f63b1009dbd2a2cc88d1c09b262bf2cd: !TransformComponent
+                        Id: 04612da2-73b4-478c-bb11-6f75a0dccffb
+                        Position: {X: 0.0, Y: 0.0, Z: 10.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    5ba758256ee7bd760a435835c8fae5d9: !CameraComponent
+                        Id: 48b58f70-74f3-49b4-b6a5-9dc1c21929bc
+                        Name: null
+                        Projection: Orthographic
+                        UseCustomAspectRatio: true
+                        Slot: 00000000-0000-0000-0000-000000000000
