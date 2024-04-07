@@ -32,7 +32,11 @@ public class ConvoyPositionerManager : StartupScript
 		Game.Window.SetSize(new(Dimensions.Width, Dimensions.Height));
 		Game.Window.AllowUserResizing = true;
 
-		Grid map = MapGenerator.GenerateMap(Dimensions);
+		Grid map = new(new(100, 100));
+		map.GenerateTerrain()/*.GenerateZones()*/.GenerateBuildings();
+		MakeColony([map[10, 10], map[10, 11], map[11, 10], map[11, 11]]);
+		MakeColony([map[70, 70], map[42, 80]]);
+		
 		foreach (Tile tile in map)
 		{
 			List<Entity> gridElement = TilePrefab.Instantiate();
@@ -66,7 +70,7 @@ public class ConvoyPositionerManager : StartupScript
 					}
 				}
 			}
-			List<Tile>? path = NodeStatics.GetPath(caravanSpawnLocation!, colonyCenter, (tile) => tile.IsValidCaravanSpawn());
+			List<Tile>? path = BreadthFirstStatics.GetPath(caravanSpawnLocation!, colonyCenter, (tile) => tile.IsValidCaravanSpawn());
 			//List<Tile> validTiles = colonyCenter.FanOut((tile) => tile.IsValidCaravanSpawn()).ToList();
 			List<TileComponent> tiles = Entity.Scene.Entities.Where((entity) =>
 			{
@@ -93,6 +97,16 @@ public class ConvoyPositionerManager : StartupScript
 					spriteComponent.Color = new(spriteComponent.Color.R * 0.5f, spriteComponent.Color.G * 0.5f, spriteComponent.Color.B * 0.5f);
 				}
 			}
+		}
+	}
+
+	public void MakeColony(IEnumerable<Tile> tiles)
+	{
+		foreach (Tile tile in tiles)
+		{
+			tile.Contents.Clear();
+			tile.Contents.Add(new Plains());
+			tile.Contents.Add(new Colony());
 		}
 	}
 }

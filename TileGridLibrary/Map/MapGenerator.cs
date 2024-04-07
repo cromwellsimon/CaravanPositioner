@@ -7,47 +7,60 @@ using System.Threading.Tasks;
 using TileGridLibrary.Map.Buildings;
 using TileGridLibrary.Map.Terrain;
 using TileGridLibrary.Map.Zones;
+using static TileGridLibrary.Map.MapGenerator;
 
 namespace TileGridLibrary.Map;
 
 public static class MapGenerator
 {
+	private const float scale = 0.1f;
+
     public static Grid GenerateMap(Dimensions dimensions)
     {
         Grid grid = new(dimensions);
-        MapElements mapElements = new(dimensions.Width, dimensions.Height);
-        foreach (GridPosition pixel in dimensions)
+		grid.GenerateTerrain().GenerateZones().GenerateBuildings();
+        return grid;
+	}
+
+	public static Grid GenerateTerrain(this Grid grid)
+	{
+		Noise.Seed = DateTimeOffset.UtcNow.Nanosecond;
+		float[,] terrainElevation = Noise.Calc2D(grid.Width, grid.Height, scale);
+		foreach (Tile tile in grid)
 		{
-			Tile tile = grid[pixel.X, pixel.Y];
-			tile.Contents.Add(ParseElevation(mapElements.TerrainElevation[pixel.X, pixel.Y]));
-			ITileContent? zone = ParseZone(tile, mapElements.ZoneAssignment[pixel.X, pixel.Y]);
+			tile.Contents.Add(ParseElevation(terrainElevation[tile.Position.X, tile.Position.Y]));
+		}
+		return grid;
+	}
+
+	public static Grid GenerateZones(this Grid grid)
+	{
+		Noise.Seed = DateTimeOffset.UtcNow.Microsecond;
+		float[,] zoneAssignment = Noise.Calc2D(grid.Width, grid.Height, scale);
+		foreach (Tile tile in grid)
+		{
+			ITileContent? zone = ParseZone(tile, zoneAssignment[tile.Position.X, tile.Position.Y]);
 			if (zone != null)
 			{
-				grid[pixel.X, pixel.Y].Contents.Add(zone);
+				tile.Contents.Add(zone);
 			}
-			ITileContent? building = ParseBuilding(tile, mapElements.BuildingPlacement[pixel.X, pixel.Y]);
+		}
+		return grid;
+	}
+
+	public static Grid GenerateBuildings(this Grid grid)
+	{
+		Noise.Seed = DateTimeOffset.UtcNow.Millisecond;
+		float[,] buildingPlacement = Noise.Calc2D(grid.Width, grid.Height, scale);
+		foreach (Tile tile in grid)
+		{
+			ITileContent? building = ParseBuilding(tile, buildingPlacement[tile.Position.X, tile.Position.Y]);
 			if (building != null)
 			{
-				grid[pixel.X, pixel.Y].Contents.Add(building);
+				tile.Contents.Add(building);
 			}
 		}
-        return grid;
-    }
-
-    public record MapElements
-    {
-        public float[,] TerrainElevation { get; private set; } = default!;
-        public float[,] ZoneAssignment { get; private set; } = default!;
-        public float[,] BuildingPlacement { get; private set; } = default!;
-		public MapElements(int width, int height)
-		{
-			Noise.Seed = DateTimeOffset.UtcNow.Nanosecond;
-			TerrainElevation = Noise.Calc2D(width, height, 1.0f);
-			Noise.Seed = DateTimeOffset.UtcNow.Microsecond;
-			ZoneAssignment = Noise.Calc2D(width, height, 1.0f);
-			Noise.Seed = DateTimeOffset.UtcNow.Millisecond;
-			BuildingPlacement = Noise.Calc2D(width, height, 1.0f);
-		}
+		return grid;
 	}
 
     public static ITileContent ParseElevation(float noiseValue) => noiseValue switch

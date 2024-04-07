@@ -25,8 +25,12 @@ public class Node(Tile tile, Node? previousNode) : IEnumerable<Node>
 	IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 }
 
-public static class NodeStatics
+public static class BreadthFirstStatics
 {
+	/// <remarks>
+	/// Works the exact same as <see cref="TileStatics.FanOut(Tile, Func{Tile, bool}?)"/> except it works through the <see cref="Node"/> class.
+	/// A depth-first algorithm would work identically to this, just replacing the <see cref="Queue{T}"/> with a <see cref="Stack{T}"/>.
+	/// </remarks>
 	public static List<Tile> GetPath(this Tile inStartingTile, Tile inEndingTile, Func<Tile, bool>? predicate = null)
 	{
 		predicate ??= ((_) => true);
