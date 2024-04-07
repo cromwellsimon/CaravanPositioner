@@ -33,9 +33,9 @@ public class ConvoyPositionerManager : StartupScript
 		Game.Window.AllowUserResizing = true;
 
 		Grid map = new(new(100, 100));
-		map.GenerateTerrain()/*.GenerateZones()*/.GenerateBuildings();
-		MakeColony([map[10, 10], map[10, 11], map[11, 10], map[11, 11]]);
-		MakeColony([map[70, 70], map[42, 80]]);
+		map.GenerateTerrain().GenerateZones().GenerateBuildings();
+		//MakeColony([map[10, 10], map[10, 11], map[11, 10], map[11, 11]]);
+		//MakeColony([map[70, 70], map[42, 80]]);
 		
 		foreach (Tile tile in map)
 		{
