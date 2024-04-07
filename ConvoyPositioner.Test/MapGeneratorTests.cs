@@ -7,6 +7,7 @@ using TileGridLibrary.Map;
 using TileGridLibrary.Convoy;
 using TileGridLibrary.Map.Terrain;
 using TileGridLibrary.Map.Buildings;
+using TileGridLibrary.Map.Zones;
 
 namespace TileGridLibrary.Test;
 
@@ -15,18 +16,22 @@ public class MapGeneratorTests
 	[Fact]
 	public void MapGeneratorDebug()
 	{
-		Grid test = MapGenerator.GenerateMap(100, 100);
+		Grid test = MapGenerator.GenerateMap(new(100, 100));
 		Assert.True(true);
 	}
 
 	[Fact]
 	public void ConvoyDebug()
 	{
-		Grid map = MapGenerator.GenerateMap(100, 100);
-		Convoy.Convoy convoy = new(map);
-		Tile spawnTile = map[convoy.Position];
-		Assert.False(spawnTile.Contents.Any((content) => content is Mountains));
-		Assert.False(spawnTile.Contents.Any((content) => content is Building));
-		Assert.False(spawnTile.Contents.Any((content) => content is Water));
+		Grid map = MapGenerator.GenerateMap(new(100, 100));
+		Tile? colonyCenter = map.Where((tile) => tile.Contents.Any((contents) => contents is Colony)).GetCenterOfMass();
+		if (colonyCenter != null)
+		{
+			Caravan convoy = new(map, colonyCenter);
+			Tile spawnTile = map[convoy.Position];
+			Assert.False(spawnTile.Contents.Any((content) => content is Mountains));
+			Assert.False(spawnTile.Contents.Any((content) => content is Building));
+			Assert.False(spawnTile.Contents.Any((content) => content is Water));
+		}
 	}
 }

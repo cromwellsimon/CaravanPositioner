@@ -8,13 +8,13 @@ public class Grid : IEnumerable<Tile>
 {
 	public List<List<Tile>> Tiles { get; init; } = default!;
 
-	public Grid(int inWidth, int inHeight)
+	public Grid(Dimensions dimensions)
 	{
-		Tiles = new(inWidth);
-		for (int width = 0; width < inWidth; width++) 
+		Tiles = new(dimensions.Width);
+		for (int width = 0; width < dimensions.Width; width++) 
 		{
 			Tiles.Add(new());
-			for (int height = 0; height < inHeight; height++)
+			for (int height = 0; height < dimensions.Height; height++)
 			{
 				Tiles[width].Add(new(this, new(width, height)));
 			}

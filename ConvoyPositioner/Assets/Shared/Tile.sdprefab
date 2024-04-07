@@ -1,0 +1,27 @@
+!PrefabAsset
+Id: 684125e9-45dd-4c38-bdaa-05e65a99cc59
+SerializedVersion: {Stride: 3.1.0.1}
+Tags: []
+Hierarchy:
+    RootParts:
+        - ref!! e0b92689-8d4a-403d-abc5-463dfc3358c2
+    Parts:
+        -   Entity:
+                Id: e0b92689-8d4a-403d-abc5-463dfc3358c2
+                Name: Tile
+                Components:
+                    85d8ec9cdd2fd1f18da7223dd3160370: !TransformComponent
+                        Id: 7965a500-e5c9-4586-9c3d-7151da20a534
+                        Position: {X: 0.5, Y: 0.5, Z: 0.0}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
+                        Children: {}
+                    94dc0de93c5b0c0b5ef042d592733d7c: !SpriteComponent
+                        Id: 5de61b44-3255-4747-b401-b08ec72f7a93
+                        SpriteProvider: !SpriteFromSheet
+                            Sheet: 2ab21a6d-5a21-486a-a8b5-707bcff65a8c:WhiteSquare
+                        Color: {R: 1.0, G: 1.0, B: 1.0, A: 1.0}
+                        PremultipliedAlpha: false
+                    6ba61eff41c2775a2a2cf25e51d5512e: !ConvoyPositioner.TileComponent,ConvoyPositioner.Game
+                        Id: 7efa8475-92b9-4812-8551-d9357ef056c1
+                        Tile: null

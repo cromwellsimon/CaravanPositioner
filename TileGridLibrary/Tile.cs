@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using OneOf;
@@ -79,22 +80,65 @@ public static class TileStatics
 	/// <remarks>
 	/// In the context of a tree, it's obvious how a breadth-first search works. This is a breadth-first search in the context of a grid structure
 	/// </remarks>
-	public static IEnumerable<Tile> FanOut(this Tile inTile)
+	public static IEnumerable<Tile> FanOut(this Tile inTile, Func<Tile, bool>? predicate = null)
 	{
-		HashSet<Tile> fannedTiles = new();
-		Queue<Tile> toFan = new();
-		toFan.Enqueue(inTile);
+		predicate ??= ((_) => true);
+		HashSet<Tile> searchedTiles = new();
+		Queue<Tile> unsearchedTiles = new();
+		unsearchedTiles.Enqueue(inTile);
 
-		while (toFan.Count > 0)
+		while (unsearchedTiles.Count > 0)
 		{
-			Tile fannedTile = toFan.Dequeue();
-			yield return fannedTile;
-			fannedTiles.Add(fannedTile);
-			foreach (Tile tile in fannedTile.Circle())
+			Tile searchedTile = unsearchedTiles.Dequeue();
+			yield return searchedTile;
+			searchedTiles.Add(searchedTile);
+			foreach (Tile tile in searchedTile.Circle())
 			{
-				if (fannedTiles.Contains(tile) == false && toFan.Contains(tile) == false)
+				if (searchedTiles.Contains(tile) == false && unsearchedTiles.Contains(tile) == false)
 				{
-					toFan.Enqueue(tile);
+					if (predicate.Invoke(tile))
+					{
+						unsearchedTiles.Enqueue(tile);
+					}
+					else
+					{
+						searchedTiles.Add(tile);
+					}
+				}
+			}
+		}
+	}
+
+	/// <remarks>
+	/// Note that this is identical to <see cref="TileStatics.FanOut(Tile)"/> except that, instead of a <see cref="Stack{T}"/>, it's a <see cref="Queue{T}"/>.
+	/// I had originally done this using recursion but figured that using the <see cref="Stack{T}"/> would be better to prevent StackOverflows.
+	/// This is a depth-first search.
+	/// </remarks>
+	public static IEnumerable<Tile> SnakeOut(this Tile inTile, Func<Tile, bool>? predicate = null)
+	{
+		predicate ??= ((_) => true);
+		HashSet<Tile> searchedTiles = new();
+		Stack<Tile> unsearchedTiles = new();
+		unsearchedTiles.Push(inTile);
+
+		while (unsearchedTiles.Count > 0)
+		{
+			Tile searchedTile = unsearchedTiles.Pop();
+			yield return searchedTile;
+			searchedTiles.Add(searchedTile);
+			foreach (Tile tile in searchedTile.Circle())
+			{
+				if (searchedTiles.Contains(tile) == false && unsearchedTiles.Contains(tile) == false)
+				{
+					if (predicate.Invoke(tile))
+					{
+						unsearchedTiles.Push(tile);
+						continue;
+					}
+					else
+					{
+						searchedTiles.Add(tile);
+					}
 				}
 			}
 		}
@@ -149,4 +193,6 @@ public static class TileStatics
 		}
 		return grid?[totalX / tileCount][totalY / tileCount];
 	}
+
+	public static int DistanceTo(this Tile inStart, Tile inEnd) => Math.Abs(inStart.Position.X - inEnd.Position.X) + Math.Abs(inStart.Position.Y - inEnd.Position.Y);
 }

@@ -12,27 +12,25 @@ namespace TileGridLibrary.Map;
 
 public static class MapGenerator
 {
-    public static Grid GenerateMap(int width, int height)
+    public static Grid GenerateMap(Dimensions dimensions)
     {
-        Grid grid = new(width, height);
-        MapElements mapElements = new(width, height);
-        for (int x = 0; x < width; x++)
-        {
-            for (int y = 0; y < height; y++)
-            {
-                grid[x, y].Contents.Add(ParseElevation(mapElements.TerrainElevation[x, y]));
-                ITileContent? zone = ParseZone(mapElements.ZoneAssignment[x, y]);
-                if (zone != null)
-				{
-					grid[x, y].Contents.Add(zone);
-				}
-                ITileContent? building = ParseBuilding(mapElements.BuildingPlacement[x, y]);
-                if (building != null)
-				{
-					grid[x, y].Contents.Add(building);
-				}
-            }
-        }
+        Grid grid = new(dimensions);
+        MapElements mapElements = new(dimensions.Width, dimensions.Height);
+        foreach (GridPosition pixel in dimensions)
+		{
+			Tile tile = grid[pixel.X, pixel.Y];
+			tile.Contents.Add(ParseElevation(mapElements.TerrainElevation[pixel.X, pixel.Y]));
+			ITileContent? zone = ParseZone(tile, mapElements.ZoneAssignment[pixel.X, pixel.Y]);
+			if (zone != null)
+			{
+				grid[pixel.X, pixel.Y].Contents.Add(zone);
+			}
+			ITileContent? building = ParseBuilding(tile, mapElements.BuildingPlacement[pixel.X, pixel.Y]);
+			if (building != null)
+			{
+				grid[pixel.X, pixel.Y].Contents.Add(building);
+			}
+		}
         return grid;
     }
 
@@ -59,15 +57,21 @@ public static class MapGenerator
 		_ => new Mountains(),
 	};
 
-    public static ITileContent? ParseZone(float noiseValue) => noiseValue switch
-    {
-        >= 200 => new Colony(),
-        _ => null
-    };
+    public static ITileContent? ParseZone(Tile tile, float noiseValue)
+	{
+		if (noiseValue >= 150 && tile.IsValidColonyPlacement())
+		{
+			return new Colony();
+		}
+		return null;
+	}
 
-    public static ITileContent? ParseBuilding(float noiseValue) => noiseValue switch
-    {
-        >= 200 => new Building(),
-        _ => null
-    };
+    public static ITileContent? ParseBuilding(Tile tile, float noiseValue)
+	{
+		if (noiseValue >= 200 && tile.IsValidBuildingPlacement())
+		{
+			return new Building();
+		}
+		return null;
+	}
 }

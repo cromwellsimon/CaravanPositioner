@@ -3,28 +3,44 @@ Id: 23c7cd19-8f67-4c53-b217-7ed690537dfa
 SerializedVersion: {Stride: 3.1.0.1}
 Tags: []
 ChildrenIds: []
-Parent: 32501218-5f55-444e-b315-a92928dfd32a:Scene
 Offset: {X: 0.0, Y: 0.0, Z: 0.0}
 Hierarchy:
     RootParts:
         - ref!! d6b35d43-3e17-4660-b67b-296ab5ac8f62
-        - ref!! 38d736a9-c963-4a48-998d-e03af55a35d2
+        - ref!! 50fc6670-6a67-49c7-9c87-f1c08b980a1c
+        - ref!! 850d9355-a8fc-4ca6-8802-873d416a2b57
     Parts:
         -   Entity:
-                Id: 38d736a9-c963-4a48-998d-e03af55a35d2
+                Id: 50fc6670-6a67-49c7-9c87-f1c08b980a1c
                 Name: Background
                 Components:
-                    da0f945b54ba9395742931b81d8179fc: !TransformComponent
-                        Id: fdcd03ce-0967-4dbe-bc13-cb9e855dd3a6
+                    7811583f92c3ee110381b83eb7a2d73d: !TransformComponent
+                        Id: c93e073d-fd13-4f9a-b495-1ce48235c46b
+                        Position: {X: 0.0, Y: 0.0, Z: -0.1}
+                        Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
+                        Scale: {X: 1000.0, Y: 1000.0, Z: 1.0}
+                        Children: {}
+                    e9dc237854672bf54b7b1e4ad20d3e62: !SpriteComponent
+                        Id: 7e074088-3cb8-4e19-b55b-e258e6ba6ab9
+                        SpriteProvider: !SpriteFromSheet
+                            Sheet: 2ab21a6d-5a21-486a-a8b5-707bcff65a8c:WhiteSquare
+                        Color: {R: 0.0, G: 0.0, B: 0.0, A: 1.0}
+        -   Entity:
+                Id: 850d9355-a8fc-4ca6-8802-873d416a2b57
+                Name: ConvoyPositionerManager
+                Components:
+                    0c1cd1937056c3f6f5ff33432c52f420: !TransformComponent
+                        Id: 08d49e31-3a04-4056-829d-7d602ab6bf33
                         Position: {X: 0.0, Y: 0.0, Z: 0.0}
                         Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
-                        Scale: {X: 10.0, Y: 10.0, Z: 1.0}
+                        Scale: {X: 1.0, Y: 1.0, Z: 1.0}
                         Children: {}
-                    a69ade2f000ed26555219f6d6d126789: !SpriteComponent
-                        Id: cdcb0b91-84c5-4e18-b907-22ef9749c450
-                        SpriteProvider: !SpriteFromSheet
-                            Sheet: 2ab21a6d-5a21-486a-a8b5-707bcff65a8c:SpriteSheet
-                        Color: {R: 0.0, G: 0.0, B: 0.0, A: 1.0}
+                    c7ee9f83a4549da96ea93bd4eb80de72: !ConvoyPositioner.ConvoyPositionerManager,ConvoyPositioner.Game
+                        Id: c5870a1b-116a-4f3e-995c-35594a804998
+                        Dimensions:
+                            Width: 50
+                            Height: 50
+                        TilePrefab: 684125e9-45dd-4c38-bdaa-05e65a99cc59:Tile
         -   Entity:
                 Id: d6b35d43-3e17-4660-b67b-296ab5ac8f62
                 Name: Camera
@@ -39,5 +55,6 @@ Hierarchy:
                         Id: 48b58f70-74f3-49b4-b6a5-9dc1c21929bc
                         Name: null
                         Projection: Orthographic
-                        UseCustomAspectRatio: true
-                        Slot: 00000000-0000-0000-0000-000000000000
+                        OrthographicSize: 1.0
+                        AspectRatio: 1.0
+                        Slot: 3fdcf6a2-9504-426d-a9f6-d682e7cdac79

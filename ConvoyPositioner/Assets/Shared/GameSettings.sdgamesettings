@@ -2,16 +2,16 @@
 Id: 4d4f631d-5d07-45bb-a43b-5a1dd16185fa
 SerializedVersion: {Stride: 3.1.0.1}
 Tags: []
-DefaultScene: 32501218-5f55-444e-b315-a92928dfd32a:Scene
+DefaultScene: 23c7cd19-8f67-4c53-b217-7ed690537dfa:ConvoyPositioner
 GraphicsCompositor: 1fe2bd0c-aeed-4f7c-9007-dbc5456d7c7d:GraphicsCompositor
 Defaults:
     - !Stride.Graphics.RenderingSettings,Stride.Graphics
-        DefaultBackBufferWidth: 640
-        DefaultBackBufferHeight: 1136
-        AdaptBackBufferToScreen: false
+        DefaultBackBufferWidth: 800
+        DefaultBackBufferHeight: 800
+        AdaptBackBufferToScreen: true
         DefaultGraphicsProfile: Level_9_3
         ColorSpace: Linear
-        DisplayOrientation: Portrait
+        DisplayOrientation: LandscapeLeft
     - !Stride.Assets.EditorSettings,Stride.Assets
         RenderingMode: HDR
     - !Stride.Assets.Textures.TextureSettings,Stride.Assets
