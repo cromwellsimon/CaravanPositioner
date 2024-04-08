@@ -33,11 +33,12 @@ public class ConvoyPositionerManager : StartupScript
 		{
 			return;
 		}
-		Tile caravanSpawnLocation = GetCaravanSpawnLocation(map, colonyCenter);
+		Tile? caravanSpawnLocation = GetCaravanSpawnLocation(map, colonyCenter);
 		if (caravanSpawnLocation == null)
 		{
 			return;
 		}
+		caravanSpawnLocation.AddContent(new Caravan());
 		//List<Tile>? path = AStarStatics.GetPath(caravanSpawnLocation!, colonyCenter, (tile) => tile.IsValidCaravanSpawn());
 		List<Tile>? path = BreadthFirstStatics.GetPath(caravanSpawnLocation, colonyCenter, (tile) => tile.IsValidCaravanSpawn());
 		//List<Tile> validTiles = colonyCenter.FanOut((tile) => tile.IsValidCaravanSpawn()).ToList();
@@ -85,13 +86,13 @@ public class ConvoyPositionerManager : StartupScript
 	{
 		foreach (Tile tile in tiles)
 		{
-			tile.Contents.Clear();
-			tile.Contents.Add(new Plains());
-			tile.Contents.Add(new Colony());
+			tile.ClearContent();
+			tile.AddContent(new Plains());
+			tile.AddContent(new Colony());
 		}
 	}
 
-	public Tile GetCaravanSpawnLocation(Grid map, Tile colonyCenter)
+	public Tile? GetCaravanSpawnLocation(Grid map, Tile colonyCenter)
 	{
 		Tile? caravanSpawnLocation = map.GetCaravanSpawnLocation(colonyCenter);
 		if (caravanSpawnLocation == null)
@@ -129,10 +130,12 @@ public class ConvoyPositionerManager : StartupScript
 			SpriteComponent spriteComponent = tile.Entity.Get<SpriteComponent>();
 			if (tile.Tile == caravanSpawnLocation)
 			{
-				spriteComponent.Color = Color.Red;
+				// Caravan is of ITileContent so its color gets added by the Component
+				continue;
 			}
 			else if (tile.Tile == colonyCenter)
 			{
+				// colonyCenter is not an ITileContent, it's just an abstract an idea, so I'm adding the color manually in this case
 				spriteComponent.Color = Color.Yellow;
 			}
 			else
@@ -147,6 +150,10 @@ public static class MapGeneratorStatics
 {
 	public static Color GetTileColor(this Tile inTile)
 	{
+		if (inTile.Contents.Any(Is<Caravan>))
+		{
+			return Color.Red;
+		}
 		if (inTile.Contents.Any(Is<Water>))
 		{
 			return Color.Blue;

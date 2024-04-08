@@ -11,8 +11,28 @@ public class Tile(Grid inGrid, GridPosition inPosition)
 {
 	public Grid Grid { get; private set; } = inGrid;
 	/// <summary> The list of things that are currently on this tile at the moment </summary>
-	public HashSet<ITileContent> Contents { get; private set; } = new();
+	private HashSet<ITileContent> _contents = new();
+	public IEnumerable<ITileContent> Contents => _contents;
 	public GridPosition Position { get; private set; } = inPosition;
+
+	public bool AddContent(ITileContent inContent)
+	{
+		bool result = _contents.Add(inContent);
+		if (result == true)
+		{
+			OnContentsUpdatedEvent?.Invoke();
+		}
+		return result;
+	}
+
+	public void ClearContent()
+	{
+		_contents.Clear();
+		OnContentsUpdatedEvent?.Invoke();
+	}
+
+	public delegate void OnContentsUpdatedDelegate();
+	public event OnContentsUpdatedDelegate? OnContentsUpdatedEvent;
 }
 
 public static class TileStatics

@@ -25,7 +25,7 @@ public class Grid : IEnumerable<Tile>
 	public int Height => Tiles[0].Count;
 	public List<Tile> this[int inIndex] => Tiles[inIndex];
 	public Tile this[int inX, int inY] => Tiles[inX][inY];
-	public Tile this[Vector2 inVector2] => this[(int)inVector2.X, (int)inVector2.Y];
+	public Tile this[GridPosition inGridPosition] => this[inGridPosition.X, inGridPosition.Y];
 
 	/// <summary>
 	/// This traverses the Grid like a 2D array

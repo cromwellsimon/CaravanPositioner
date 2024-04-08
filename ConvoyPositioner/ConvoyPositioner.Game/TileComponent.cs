@@ -21,9 +21,19 @@ public class TileComponent : StartupScript
 		get { return _tile; }
 		set
 		{
+			if (_tile != null)
+			{
+				_tile.OnContentsUpdatedEvent -= OnContentsUpdated;
+			}
 			_tile = value;
-			_spriteComponent ??= Entity.Get<SpriteComponent>();
-			_spriteComponent.Color = _tile.GetTileColor();
+			_tile.OnContentsUpdatedEvent += OnContentsUpdated;
+			OnContentsUpdated();
 		}
+	}
+
+	private void OnContentsUpdated()
+	{
+		_spriteComponent ??= Entity.Get<SpriteComponent>();
+		_spriteComponent.Color = _tile.GetTileColor();
 	}
 }

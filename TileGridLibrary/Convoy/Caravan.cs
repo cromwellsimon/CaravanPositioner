@@ -9,18 +9,8 @@ using TileGridLibrary.Map.Terrain;
 
 namespace TileGridLibrary.Convoy;
 
-public class Caravan
+public class Caravan : ITileContent
 {
-	public Vector2 Position { get; set; }
-
-	public Caravan(Grid inGrid, Tile inCenterTile)
-	{
-		Tile? spawnTile = inGrid.GetCaravanSpawnLocation(inCenterTile);
-		if (spawnTile != null)
-		{
-			Position = spawnTile.Position.ToSystemVector2();
-		}
-	}
 }
 
 public static class ConvoyStatics

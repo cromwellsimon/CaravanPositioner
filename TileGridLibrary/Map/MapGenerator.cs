@@ -28,7 +28,7 @@ public static class MapGenerator
 		float[,] terrainElevation = Noise.Calc2D(grid.Width, grid.Height, scale);
 		foreach (Tile tile in grid)
 		{
-			tile.Contents.Add(ParseElevation(terrainElevation[tile.Position.X, tile.Position.Y]));
+			tile.AddContent(ParseElevation(terrainElevation[tile.Position.X, tile.Position.Y]));
 		}
 		return grid;
 	}
@@ -42,7 +42,7 @@ public static class MapGenerator
 			ITileContent? zone = ParseZone(tile, zoneAssignment[tile.Position.X, tile.Position.Y]);
 			if (zone != null)
 			{
-				tile.Contents.Add(zone);
+				tile.AddContent(zone);
 			}
 		}
 		return grid;
@@ -57,7 +57,7 @@ public static class MapGenerator
 			ITileContent? building = ParseBuilding(tile, buildingPlacement[tile.Position.X, tile.Position.Y]);
 			if (building != null)
 			{
-				tile.Contents.Add(building);
+				tile.AddContent(building);
 			}
 		}
 		return grid;

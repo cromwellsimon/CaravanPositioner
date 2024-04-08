@@ -25,13 +25,12 @@ public class MapGeneratorTests
 	{
 		Grid map = MapGenerator.GenerateMap(new(100, 100));
 		Tile? colonyCenter = map.Where((tile) => tile.Contents.Any((contents) => contents is Colony)).GetCenterOfMass();
-		if (colonyCenter != null)
-		{
-			Caravan convoy = new(map, colonyCenter);
-			Tile spawnTile = map[convoy.Position];
-			Assert.False(spawnTile.Contents.Any((content) => content is Mountains));
-			Assert.False(spawnTile.Contents.Any((content) => content is Building));
-			Assert.False(spawnTile.Contents.Any((content) => content is Water));
-		}
+		Assert.NotNull(colonyCenter);
+		Tile? spawnTile = map.GetCaravanSpawnLocation(colonyCenter);
+		Assert.NotNull(spawnTile);
+		spawnTile.AddContent(new Caravan());
+		Assert.False(spawnTile.Contents.Any((content) => content is Mountains));
+		Assert.False(spawnTile.Contents.Any((content) => content is Building));
+		Assert.False(spawnTile.Contents.Any((content) => content is Water));
 	}
 }
