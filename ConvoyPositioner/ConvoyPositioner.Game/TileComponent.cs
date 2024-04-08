@@ -9,7 +9,7 @@ using Stride.Engine;
 using TileGridLibrary;
 using Stride.Core;
 
-namespace ConvoyPositioner;
+namespace CaravanPositioner;
 
 public class TileComponent : StartupScript
 {

@@ -22,6 +22,6 @@ Hierarchy:
                             Sheet: 2ab21a6d-5a21-486a-a8b5-707bcff65a8c:WhiteSquare
                         Color: {R: 1.0, G: 1.0, B: 1.0, A: 1.0}
                         PremultipliedAlpha: false
-                    6ba61eff41c2775a2a2cf25e51d5512e: !ConvoyPositioner.TileComponent,ConvoyPositioner.Game
-                        Id: 7efa8475-92b9-4812-8551-d9357ef056c1
+                    f3bfa411599f1c6ee070e312692de7be: !CaravanPositioner.TileComponent,ConvoyPositioner.Game
+                        Id: 10fb5e61-d737-4cac-9395-9a5cd4bcd47f
                         Tile: null

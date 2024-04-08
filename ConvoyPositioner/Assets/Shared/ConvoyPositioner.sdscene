@@ -11,7 +11,7 @@ Hierarchy:
     Parts:
         -   Entity:
                 Id: 850d9355-a8fc-4ca6-8802-873d416a2b57
-                Name: ConvoyPositionerManager
+                Name: CaravanPositionerManager
                 Components:
                     0c1cd1937056c3f6f5ff33432c52f420: !TransformComponent
                         Id: 08d49e31-3a04-4056-829d-7d602ab6bf33
@@ -19,8 +19,8 @@ Hierarchy:
                         Rotation: {X: 0.0, Y: 0.0, Z: 0.0, W: 1.0}
                         Scale: {X: 1.0, Y: 1.0, Z: 1.0}
                         Children: {}
-                    c7ee9f83a4549da96ea93bd4eb80de72: !ConvoyPositioner.ConvoyPositionerManager,ConvoyPositioner.Game
-                        Id: c5870a1b-116a-4f3e-995c-35594a804998
+                    84279c434a9ad59b39a60bd6bff5a560: !CaravanPositioner.CaravanPositionerManager,ConvoyPositioner.Game
+                        Id: b53aaaf0-e3dd-4c47-9773-6e6feebeb2b1
                         Dimensions:
                             Width: 100
                             Height: 100

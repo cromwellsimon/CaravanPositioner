@@ -22,8 +22,8 @@ Hierarchy:
                     c7ee9f83a4549da96ea93bd4eb80de72: !ConvoyPositioner.ConvoyPositionerManager,ConvoyPositioner.Game
                         Id: b2905093-c9a6-46de-9061-0acfe961e572
                         Dimensions:
-                            Width: 50
-                            Height: 50
+                            Width: 100
+                            Height: 100
                         TilePrefab: null
         -   Entity:
                 Id: cb8294e0-e743-49fa-834d-6e74434c89ae

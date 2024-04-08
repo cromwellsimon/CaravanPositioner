@@ -15,9 +15,9 @@ using TileGridLibrary.Convoy;
 using TileGridLibrary.Pathfinding.BreadthFirst;
 using TileGridLibrary.Pathfinding.AStar;
 
-namespace ConvoyPositioner;
+namespace CaravanPositioner;
 
-public class ConvoyPositionerManager : StartupScript
+public class CaravanPositionerManager : StartupScript
 {
 	public Dimensions Dimensions { get; init; } = new(100, 100);
 	public Prefab TilePrefab { get; init; } = default!;
@@ -33,7 +33,23 @@ public class ConvoyPositionerManager : StartupScript
 		{
 			return;
 		}
-		Tile? caravanSpawnLocation = GetCaravanSpawnLocation(map, colonyCenter);
+		Tile? caravanSpawnLocation = map.GetCaravanSpawnLocation(colonyCenter);
+		if (caravanSpawnLocation == null)
+		{
+			foreach (Tile potentialPosition in colonyCenter.FanOut())
+			{
+				if (potentialPosition.IsValidColonyPlacement() == false)
+				{
+					continue;
+				}
+				caravanSpawnLocation = map.GetCaravanSpawnLocation(potentialPosition);
+				if (caravanSpawnLocation != null)
+				{
+					colonyCenter = potentialPosition;
+					break;
+				}
+			}
+		}
 		if (caravanSpawnLocation == null)
 		{
 			return;
@@ -64,9 +80,9 @@ public class ConvoyPositionerManager : StartupScript
 	public Grid GenerateMap()
 	{
 		Grid map = new(new(100, 100));
-		map.GenerateTerrain().GenerateZones().GenerateBuildings();
-		//MakeColony([map[10, 10], map[10, 11], map[11, 10], map[11, 11]]);
-		//MakeColony([map[70, 70], map[42, 80]]);
+		map.GenerateTerrain()/*.GenerateZones()*/.GenerateBuildings();
+		ForceColony([map[10, 10], map[10, 11], map[11, 10], map[11, 11]]);
+		ForceColony([map[70, 70], map[42, 80]]);
 
 		foreach (Tile tile in map)
 		{
@@ -90,28 +106,6 @@ public class ConvoyPositionerManager : StartupScript
 			tile.AddContent(new Plains());
 			tile.AddContent(new Colony());
 		}
-	}
-
-	public Tile? GetCaravanSpawnLocation(Grid map, Tile colonyCenter)
-	{
-		Tile? caravanSpawnLocation = map.GetCaravanSpawnLocation(colonyCenter);
-		if (caravanSpawnLocation == null)
-		{
-			foreach (Tile potentialPosition in colonyCenter.FanOut())
-			{
-				if (potentialPosition.IsValidColonyPlacement() == false)
-				{
-					continue;
-				}
-				caravanSpawnLocation = map.GetCaravanSpawnLocation(potentialPosition);
-				if (caravanSpawnLocation != null)
-				{
-					colonyCenter = potentialPosition;
-					break;
-				}
-			}
-		}
-		return caravanSpawnLocation;
 	}
 
 	public void SetPath(List<Tile> path, Tile colonyCenter, Tile caravanSpawnLocation)

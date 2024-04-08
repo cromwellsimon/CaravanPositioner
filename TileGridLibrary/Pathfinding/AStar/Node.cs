@@ -15,8 +15,8 @@ public class Node : IEnumerable<Node>
     public Node? PreviousNode { get; set; }
     public Tile Tile { get; init; } = default!;
 
-	public int DistanceFromStart { get; init; }
-	public int DistanceFromEnd { get; init; }
+	public int DistanceFromStart { get; private set; }
+	public int DistanceFromEnd { get; private set; }
 	public int SumOfDistance => DistanceFromStart + DistanceFromEnd;
 
     public Node(Tile inStartTile, Tile inTile, Tile inEndTile, Node? inPreviousNode)
