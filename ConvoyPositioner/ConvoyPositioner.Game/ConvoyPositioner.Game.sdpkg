@@ -14,5 +14,4 @@ OutputGroupDirectories: {}
 ExplicitFolders: []
 Bundles: []
 TemplateFolders: []
-RootAssets:
-    - 114b9c08-b2fa-4db9-8e98-ce2a8903ec05:Pipe Set
+RootAssets: []

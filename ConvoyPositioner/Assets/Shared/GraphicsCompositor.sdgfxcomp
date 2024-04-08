@@ -102,11 +102,7 @@ SharedRenderers:
 Game*: !Stride.Rendering.Compositing.SceneCameraRenderer,Stride.Engine
     Id: 76fe87cf-f574-4ad6-85b8-e9a9586be0e2
     Camera: ref!! 3fdcf6a2-9504-426d-a9f6-d682e7cdac79
-    Child*: !ConvoyPositioner.JumpyJetRenderer,ConvoyPositioner.Game
-        Id: 4d409a59-d3c6-4b55-a5c7-4bd9b8886ea5
-        ParallaxBackgrounds: aae9f4fb-e71c-4225-9d1e-57163f45c858:ParallaxBackgrounds
-        OpaqueRenderStage*: ref!! 50671147-a5c1-49d4-b4ad-3625f71439b3
-        TransparentRenderStage*: ref!! 0fa30591-02ee-486d-9347-2b6aee83d035
+    Child*: !Stride.Rendering.Compositing.ForwardRenderer,Stride.Engine ref!! 4d409a59-d3c6-4b55-a5c7-4bd9b8886ea5
     RenderMask: All
 SingleView: !Stride.Rendering.Compositing.ForwardRenderer,Stride.Engine ref!! 4d409a59-d3c6-4b55-a5c7-4bd9b8886ea5
 Editor*: !Stride.Rendering.Compositing.ForwardRenderer,Stride.Engine ref!! 4d409a59-d3c6-4b55-a5c7-4bd9b8886ea5
