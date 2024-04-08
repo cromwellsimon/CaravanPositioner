@@ -13,6 +13,7 @@ using TileGridLibrary.Map.Buildings;
 using TileGridLibrary.Map.Zones;
 using TileGridLibrary.Convoy;
 using TileGridLibrary.Pathfinding.BreadthFirst;
+using TileGridLibrary.Pathfinding.AStar;
 
 namespace ConvoyPositioner;
 
@@ -24,6 +25,32 @@ public class ConvoyPositionerManager : StartupScript
 
 	public override void Start()
 	{
+		SetCameraSettings();
+		Grid map = GenerateMap();
+
+		Tile? colonyCenter = map.Where((tile) => tile.Contents.Any((contents) => contents.Is<Colony>())).GetCenterOfMass();
+		if (colonyCenter == null)
+		{
+			return;
+		}
+		Tile caravanSpawnLocation = GetCaravanSpawnLocation(map, colonyCenter);
+		if (caravanSpawnLocation == null)
+		{
+			return;
+		}
+		//List<Tile>? path = AStarStatics.GetPath(caravanSpawnLocation!, colonyCenter, (tile) => tile.IsValidCaravanSpawn());
+		List<Tile>? path = BreadthFirstStatics.GetPath(caravanSpawnLocation, colonyCenter, (tile) => tile.IsValidCaravanSpawn());
+		//List<Tile> validTiles = colonyCenter.FanOut((tile) => tile.IsValidCaravanSpawn()).ToList();
+		if (path == null)
+		{
+			return;
+		}
+
+		SetPath(path, colonyCenter, caravanSpawnLocation);
+	}
+
+	public void SetCameraSettings()
+	{
 		Camera ??= Entity.Scene.Entities.First((entity) => entity.Name == nameof(Camera));
 		Camera.Get<CameraComponent>().OrthographicSize = Dimensions.Max();
 		TransformComponent cameraTransform = Camera.Get<TransformComponent>();
@@ -31,12 +58,15 @@ public class ConvoyPositionerManager : StartupScript
 		cameraTransform.Position.Y = Dimensions.Height / 2;
 		Game.Window.SetSize(new(Dimensions.Width, Dimensions.Height));
 		Game.Window.AllowUserResizing = true;
+	}
 
+	public Grid GenerateMap()
+	{
 		Grid map = new(new(100, 100));
 		map.GenerateTerrain().GenerateZones().GenerateBuildings();
 		//MakeColony([map[10, 10], map[10, 11], map[11, 10], map[11, 11]]);
 		//MakeColony([map[70, 70], map[42, 80]]);
-		
+
 		foreach (Tile tile in map)
 		{
 			List<Entity> gridElement = TilePrefab.Instantiate();
@@ -48,65 +78,67 @@ public class ConvoyPositionerManager : StartupScript
 				tileComponent.Tile = tile;
 			}
 		}
-
-		Tile? caravanSpawnLocation = null;
-		Tile? colonyCenter = map.Where((tile) => tile.Contents.Any((contents) => contents.Is<Colony>())).GetCenterOfMass();
-		if (colonyCenter != null)
-		{
-			caravanSpawnLocation = map.GetCaravanSpawnLocation(colonyCenter);
-			if (caravanSpawnLocation == null)
-			{
-				foreach (Tile potentialPosition in colonyCenter.FanOut())
-				{
-					if (potentialPosition.IsValidColonyPlacement() == false)
-					{
-						continue;
-					}
-					caravanSpawnLocation = map.GetCaravanSpawnLocation(potentialPosition);
-					if (caravanSpawnLocation != null)
-					{
-						colonyCenter = potentialPosition;
-						break;
-					}
-				}
-			}
-			List<Tile>? path = BreadthFirstStatics.GetPath(caravanSpawnLocation!, colonyCenter, (tile) => tile.IsValidCaravanSpawn());
-			//List<Tile> validTiles = colonyCenter.FanOut((tile) => tile.IsValidCaravanSpawn()).ToList();
-			List<TileComponent> tiles = Entity.Scene.Entities.Where((entity) =>
-			{
-				TileComponent? tileComponent = entity.Get<TileComponent>();
-				if (tileComponent != null && /*validTiles*/path.Contains(tileComponent.Tile))
-				{
-					return true;
-				}
-				return false;
-			}).Select((entity) => entity.Get<TileComponent>()).ToList();
-			foreach (TileComponent tile in tiles)
-			{
-				SpriteComponent spriteComponent = tile.Entity.Get<SpriteComponent>();
-				if (tile.Tile == caravanSpawnLocation)
-				{
-					spriteComponent.Color = Color.Red;
-				}
-				else if (tile.Tile == colonyCenter)
-				{
-					spriteComponent.Color = Color.Yellow;
-				}
-				else
-				{
-					spriteComponent.Color = new(spriteComponent.Color.R * 0.5f, spriteComponent.Color.G * 0.5f, spriteComponent.Color.B * 0.5f);
-				}
-			}
-		}
+		return map;
 	}
 
-	public void MakeColony(IEnumerable<Tile> tiles)
+	public void ForceColony(IEnumerable<Tile> tiles)
 	{
 		foreach (Tile tile in tiles)
 		{
 			tile.Contents.Clear();
 			tile.Contents.Add(new Plains());
 			tile.Contents.Add(new Colony());
+		}
+	}
+
+	public Tile GetCaravanSpawnLocation(Grid map, Tile colonyCenter)
+	{
+		Tile? caravanSpawnLocation = map.GetCaravanSpawnLocation(colonyCenter);
+		if (caravanSpawnLocation == null)
+		{
+			foreach (Tile potentialPosition in colonyCenter.FanOut())
+			{
+				if (potentialPosition.IsValidColonyPlacement() == false)
+				{
+					continue;
+				}
+				caravanSpawnLocation = map.GetCaravanSpawnLocation(potentialPosition);
+				if (caravanSpawnLocation != null)
+				{
+					colonyCenter = potentialPosition;
+					break;
+				}
+			}
+		}
+		return caravanSpawnLocation;
+	}
+
+	public void SetPath(List<Tile> path, Tile colonyCenter, Tile caravanSpawnLocation)
+	{
+		List<TileComponent> tiles = Entity.Scene.Entities.Where((entity) =>
+		{
+			TileComponent? tileComponent = entity.Get<TileComponent>();
+			if (tileComponent != null && path.Contains(tileComponent.Tile))
+			{
+				return true;
+			}
+			return false;
+		}).Select((entity) => entity.Get<TileComponent>()).ToList();
+		foreach (TileComponent tile in tiles)
+		{
+			SpriteComponent spriteComponent = tile.Entity.Get<SpriteComponent>();
+			if (tile.Tile == caravanSpawnLocation)
+			{
+				spriteComponent.Color = Color.Red;
+			}
+			else if (tile.Tile == colonyCenter)
+			{
+				spriteComponent.Color = Color.Yellow;
+			}
+			else
+			{
+				spriteComponent.Color = new(spriteComponent.Color.R * 0.5f, spriteComponent.Color.G * 0.5f, spriteComponent.Color.B * 0.5f);
+			}
 		}
 	}
 }

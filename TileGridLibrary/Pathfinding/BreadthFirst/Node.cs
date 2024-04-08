@@ -31,7 +31,7 @@ public static class BreadthFirstStatics
 	/// Works the exact same as <see cref="TileStatics.FanOut(Tile, Func{Tile, bool}?)"/> except it works through the <see cref="Node"/> class.
 	/// A depth-first algorithm would work identically to this, just replacing the <see cref="Queue{T}"/> with a <see cref="Stack{T}"/>.
 	/// </remarks>
-	public static List<Tile> GetPath(this Tile inStartingTile, Tile inEndingTile, Func<Tile, bool>? predicate = null)
+	public static List<Tile>? GetPath(this Tile inStartingTile, Tile inEndingTile, Func<Tile, bool>? predicate = null)
 	{
 		predicate ??= ((_) => true);
 		HashSet<Node> searchedTiles = new();
@@ -65,6 +65,6 @@ public static class BreadthFirstStatics
 			}
 		}
 
-		return new();
+		return null;
 	}
 }
