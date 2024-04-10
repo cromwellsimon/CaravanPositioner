@@ -1,4 +1,4 @@
-#CaravanPositioner
+# CaravanPositioner
 
 This is a little project made with the Stride game engine over the course of 2 days just so I could mess around with making a grid system, a procedural map generator, and a whole pathfinding system. This is meant to serve as my interpretation of how the caravan both positions itself and pathfinds itself to a colony in the game, RimWorld.
 
